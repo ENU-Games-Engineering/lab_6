@@ -1,7 +1,7 @@
 project(physics)
 cmake_minimum_required(VERSION 3.11)
 # Require modern C++
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 #### Setup Directories ####
@@ -19,11 +19,16 @@ add_subdirectory("lib/box2d")
 set(B2D_INCS "lib/box2d/include")
 link_directories("${CMAKE_BINARY_DIR}/lib/box2d/lib")
 
+add_library(engine STATIC engine/game_system.cpp 
+                        engine/renderer.cpp 
+                        engine/ecm.cpp)
+target_include_directories(engine INTERFACE egine)
+target_link_libraries(engine sfml-graphics)
 
 #### executable ####
 add_executable(physics 
     main.cpp 
-    game_system.cpp
+    scenes.cpp
     b2_utils.cpp)
-target_include_directories(physics PRIVATE ${SFML_INCS})
-target_link_libraries(physics sfml-graphics box2d)
+target_include_directories(physics PRIVATE ${SFML_INCS} ${B2D_INCS} engine)
+target_link_libraries(physics sfml-graphics box2d engine)

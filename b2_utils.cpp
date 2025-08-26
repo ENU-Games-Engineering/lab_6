@@ -1,21 +1,20 @@
 #include "b2_utils.hpp"
 #include "game_parameters.hpp"
-#include "game_system.hpp"
 
-using gs = GameSystem;
+using param = Parameters;
 
 
 //Convert from b2Vec2 to a Vector2f
 const sf::Vector2f box2d::bv2_to_sv2(const b2Vec2& in) {
-  return sf::Vector2f(in.x * gs::physics_scale, (in.y * gs::physics_scale));
+  return sf::Vector2f(in.x * param::physics_scale, (in.y * param::physics_scale));
 }
 //Convert from Vector2f to a b2Vec2
 const b2Vec2 box2d::sv2_to_bv2(const sf::Vector2f& in) {
-  return {in.x * gs::physics_scale_inv, in.y * gs::physics_scale_inv};
+  return {in.x * param::physics_scale_inv, in.y * param::physics_scale_inv};
 }
 //Convert from screenspace.y to physics.y (as they are the other way around)
 const sf::Vector2f box2d::invert_height(const sf::Vector2f& in) {
-  return sf::Vector2f(in.x, game_height - in.y);
+  return sf::Vector2f(in.x, param::game_height - in.y);
 }
 
 //Create a Box2D body with a box fixture

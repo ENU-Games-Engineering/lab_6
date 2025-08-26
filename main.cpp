@@ -2,21 +2,14 @@
 #include <vector>
 #include <SFML/Graphics.hpp>
 #include "game_parameters.hpp"
-#include "game_system.hpp"
+#include "scenes.hpp"
 
-sf::Texture spritesheet;
+using param = Parameters;
 
 int main(){
-  sf::RenderWindow window(sf::VideoMode({game_width, game_height}), "SPACE Invaders");
-  GameSystem::load();
-  GameSystem::init();
-	while(window.isOpen()){
-    window.clear();
-    GameSystem::update(window);
-    GameSystem::render(window);
-    //Wait for Vsync
-    window.display();
-  }
-  GameSystem::clean();
+  Scenes::physics = std::make_shared<PhysicsScene>();
+  Scenes::physics->load();
+  GameSystem::set_active_scene(Scenes::physics);
+  GameSystem::start(param::game_width,param::game_height,"physics",param::time_step);
   return 0;
 }
